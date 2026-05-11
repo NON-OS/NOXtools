@@ -1,4 +1,4 @@
-import { keccak_256 } from "@noble/hashes/sha3";
+import { keccak_256 } from "@noble/hashes/sha3.js";
 import { hexEncode } from "./hex.js";
 
 const ALLOWED_PREFIXES = ["systems.nonos.", "operator.", "capsule."];

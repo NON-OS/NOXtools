@@ -1,4 +1,4 @@
-import { keccak_256 } from "@noble/hashes/sha3";
+import { keccak_256 } from "@noble/hashes/sha3.js";
 import { hexEncode } from "./hex.js";
 import { offchainOperatorId, onchainOperatorId } from "./operator.js";
 import type { PositionInput, StakeReceipt } from "./types.js";

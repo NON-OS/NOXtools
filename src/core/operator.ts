@@ -1,5 +1,5 @@
-import { keccak_256 } from "@noble/hashes/sha3";
-import { blake3 } from "@noble/hashes/blake3";
+import { keccak_256 } from "@noble/hashes/sha3.js";
+import { blake3 } from "@noble/hashes/blake3.js";
 import { addressBytes, hexEncode, u64Be } from "./hex.js";
 import type { PositionInput } from "./types.js";
 
