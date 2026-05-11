@@ -1,0 +1,31 @@
+{
+  "name": "@nonos/nox-staking-sdk",
+  "version": "0.1.0",
+  "description": "Client-side verifiable SDK for NOX staking identity, receipts, and namespace eligibility.",
+  "license": "AGPL-3.0-or-later",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist", "src", "README.md"],
+  "scripts": {
+    "build": "tsc -p .",
+    "test": "vitest run",
+    "fmt": "echo skip"
+  },
+  "dependencies": {
+    "@noble/hashes": "^1.5.0"
+  },
+  "devDependencies": {
+    "ethers": "^6.13.0",
+    "typescript": "^5.5.0",
+    "vitest": "^2.0.0"
+  },
+  "sideEffects": false
+}
