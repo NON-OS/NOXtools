@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { buildProof } from "../src/proof.js";
-import { buildProfile } from "../src/profile.js";
-import { CAPSULE_TOOLING, eligible, JONOS_PREVIEW, OPERATOR_WAITLIST } from "../src/gate.js";
-import type { PositionInput } from "../src/types.js";
+import { buildProof } from "../src/core/proof.js";
+import { buildProfile } from "../src/core/profile.js";
+import { CAPSULE_TOOLING, eligible, JONOS_PREVIEW, OPERATOR_WAITLIST } from "../src/core/gate.js";
+import type { PositionInput } from "../src/core/types.js";
 
 const sample: PositionInput = {
   wallet: "0x1111111111111111111111111111111111111111",

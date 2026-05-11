@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { knownDeployment, MAINNET_DEPLOYMENT } from "../src/deployment.js";
+import { knownDeployment, MAINNET_DEPLOYMENT } from "../src/deployment/index.js";
 
 describe("deployment constants", () => {
   it("pins the live V4 mainnet deployment", () => {

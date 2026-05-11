@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { namespaceHash, normalizeNamespace } from "../src/namespace.js";
+import { namespaceHash, normalizeNamespace } from "../src/core/namespace.js";
 
 describe("namespace", () => {
   it("accepts allowed prefixes", () => {

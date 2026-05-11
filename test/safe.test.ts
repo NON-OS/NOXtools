@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { safeTx } from "../src/safe.js";
+import { safeTx } from "../src/core/safe.js";
 
 describe("safe", () => {
   it("builds a standard Safe payload", () => {

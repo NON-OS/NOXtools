@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { makeReceipt, receiptDigest, verifyReceiptShape } from "../src/receipt.js";
-import type { PositionInput } from "../src/types.js";
+import { makeReceipt, receiptDigest, verifyReceiptShape } from "../src/core/receipt.js";
+import type { PositionInput } from "../src/core/types.js";
 
 const sample: PositionInput = {
   wallet: "0x1111111111111111111111111111111111111111",

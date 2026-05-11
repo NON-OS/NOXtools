@@ -1,17 +1,21 @@
-export type { PositionInput, StakeReceipt, SafeTx } from "./types.js";
-export { MAINNET_DEPLOYMENT, knownDeployment, type Deployment } from "./deployment.js";
-export { normalizeNamespace, namespaceHash, namespaceType, type NamespaceType } from "./namespace.js";
-export { tierName, tierFor, type TierName } from "./tier.js";
-export { onchainOperatorId, offchainOperatorId } from "./operator.js";
-export { makeReceipt, receiptDigest, verifyReceiptShape } from "./receipt.js";
-export { safeTx } from "./safe.js";
-export { buildProof, type ProofBundle } from "./proof.js";
-export { buildProfile, type OperatorProfile } from "./profile.js";
-export { verifyReceipt, type VerifyResult } from "./verify.js";
+export { Nox } from "./sdk/index.js";
+export type { GateName, NoxOptions, OperatorIdInput, ReceiptInput } from "./sdk/index.js";
+
+export { NoxLive, type StakingStats, type StakingHealth } from "./live/index.js";
+
+export { MAINNET_DEPLOYMENT, knownDeployment, type Deployment } from "./deployment/index.js";
+
+export type { PositionInput, StakeReceipt, SafeTx } from "./core/types.js";
+export { normalizeNamespace, namespaceHash, namespaceType, type NamespaceType } from "./core/namespace.js";
+export { tierName, tierFor, type TierName } from "./core/tier.js";
+export { onchainOperatorId, offchainOperatorId } from "./core/operator.js";
+export { makeReceipt, receiptDigest, verifyReceiptShape } from "./core/receipt.js";
+export { verifyReceipt, type VerifyResult } from "./core/verify.js";
+export { safeTx } from "./core/safe.js";
+export { buildProof, type ProofBundle } from "./core/proof.js";
+export { buildProfile, type OperatorProfile } from "./core/profile.js";
 export {
   eligible,
-  JONOS_PREVIEW,
-  CAPSULE_TOOLING,
-  OPERATOR_WAITLIST,
+  JONOS_PREVIEW, CAPSULE_TOOLING, OPERATOR_WAITLIST,
   type GatePreset,
-} from "./gate.js";
+} from "./core/gate.js";

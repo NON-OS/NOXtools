@@ -1,13 +1,4 @@
-export interface Deployment {
-  chainId: number;
-  label: string;
-  stakingProxy: `0x${string}`;
-  stakingImpl: `0x${string}`;
-  namespaceRegistry: `0x${string}`;
-  accessRegistry: `0x${string}`;
-  token: `0x${string}`;
-  safe: `0x${string}`;
-}
+import type { Deployment } from "./types.js";
 
 export const MAINNET_DEPLOYMENT: Deployment = {
   chainId: 1,
@@ -19,7 +10,3 @@ export const MAINNET_DEPLOYMENT: Deployment = {
   token: "0x0a26c80Be4E060e688d7C23aDdB92cBb5D2C9eCA",
   safe: "0x3a52eA60F61036aFBBeC25F46A64485aC4477CCC",
 };
-
-export function knownDeployment(chainId: number): Deployment | undefined {
-  return chainId === 1 ? MAINNET_DEPLOYMENT : undefined;
-}

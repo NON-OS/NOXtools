@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { buildProof } from "../src/proof.js";
-import { verifyReceipt } from "../src/verify.js";
-import type { PositionInput } from "../src/types.js";
+import { buildProof } from "../src/core/proof.js";
+import { verifyReceipt } from "../src/core/verify.js";
+import type { PositionInput } from "../src/core/types.js";
 
 const sample: PositionInput = {
   wallet: "0x1111111111111111111111111111111111111111",

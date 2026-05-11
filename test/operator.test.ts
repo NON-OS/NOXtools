@@ -1,7 +1,7 @@
 import { AbiCoder, keccak256 } from "ethers";
 import { describe, expect, it } from "vitest";
-import { onchainOperatorId, offchainOperatorId } from "../src/operator.js";
-import type { PositionInput } from "../src/types.js";
+import { onchainOperatorId, offchainOperatorId } from "../src/core/operator.js";
+import type { PositionInput } from "../src/core/types.js";
 
 const base: PositionInput = {
   wallet: "0x1111111111111111111111111111111111111111",

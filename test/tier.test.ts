@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { tierFor, tierName } from "../src/tier.js";
+import { tierFor, tierName } from "../src/core/tier.js";
 
 describe("tier", () => {
   it("names cover all tiers", () => {

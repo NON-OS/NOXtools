@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { TypedDataEncoder } from "ethers";
-import { onchainOperatorId, offchainOperatorId } from "../src/operator.js";
-import type { PositionInput } from "../src/types.js";
+import { onchainOperatorId, offchainOperatorId } from "../src/core/operator.js";
+import type { PositionInput } from "../src/core/types.js";
 
 const POS: PositionInput = {
   wallet: "0x1111111111111111111111111111111111111111",

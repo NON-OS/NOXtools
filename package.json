@@ -1,7 +1,7 @@
 {
   "name": "@nonos/nox-staking-sdk",
-  "version": "0.1.0",
-  "description": "Local-first TypeScript SDK for NOX staking identity, receipts, namespaces, and Safe payloads.",
+  "version": "0.2.0",
+  "description": "Local-first TypeScript SDK for the NOX Operator Kit. Nox / NoxLive client, EIP-712 receipts, namespaces, tiers, and pinned mainnet deployment.",
   "license": "AGPL-3.0-or-later",
   "homepage": "https://github.com/NON-OS/noxcli-sdk",
   "repository": {
@@ -22,10 +22,15 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "src", "README.md"],
+  "files": ["dist", "docs", "README.md", "LICENSE"],
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
   "scripts": {
     "build": "tsc -p .",
     "test": "vitest run",
+    "prepublishOnly": "npm run build",
     "fmt": "echo skip"
   },
   "dependencies": {
