@@ -8,5 +8,7 @@ export function tokenSurface(deployment: Deployment, call: Caller) {
   return {
     balanceOf: async (wallet: string) =>
       decodeUint256(await call(to, packCall(SELECTORS.balanceOf, [encodeAddress(wallet)]))),
+    allowance: async (owner: string, spender: string) =>
+      decodeUint256(await call(to, packCall(SELECTORS.allowance, [encodeAddress(owner), encodeAddress(spender)]))),
   };
 }
