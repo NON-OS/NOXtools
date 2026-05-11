@@ -1,8 +1,17 @@
 {
   "name": "@nonos/nox-staking-sdk",
   "version": "0.1.0",
-  "description": "Client-side verifiable SDK for NOX staking identity, receipts, and namespace eligibility.",
+  "description": "Local-first TypeScript SDK for NOX staking identity, receipts, namespaces, and Safe payloads.",
   "license": "AGPL-3.0-or-later",
+  "homepage": "https://github.com/NON-OS/noxcli-sdk",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NON-OS/noxcli-sdk.git",
+    "directory": "packages/nox-staking-sdk"
+  },
+  "bugs": "https://github.com/NON-OS/noxcli-sdk/issues",
+  "keywords": ["nox", "nonos", "staking", "eip-712", "safe", "operator", "credential"],
+  "engines": { "node": ">=20" },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",

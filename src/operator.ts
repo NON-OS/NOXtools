@@ -4,7 +4,6 @@ import { addressBytes, hexEncode, u64Be } from "./hex.js";
 import type { PositionInput } from "./types.js";
 
 function preimage(label: string, p: PositionInput): Uint8Array {
-  if (p.positionId === 0n) throw new Error("invalid position");
   const labelBytes = new TextEncoder().encode(label);
   const chain = u64Be(BigInt(p.chainId));
   const staking = addressBytes(p.stakingContract);
@@ -20,9 +19,48 @@ function preimage(label: string, p: PositionInput): Uint8Array {
 }
 
 export function onchainOperatorId(p: PositionInput): string {
-  return hexEncode(keccak_256(preimage("NOX_OPERATOR_V1", p)));
+  const label = new TextEncoder().encode("NOX_OPERATOR_V1");
+  return hexEncode(
+    keccak_256(
+      concatWords([
+        u256Word(96n),
+        addressWord(addressBytes(p.wallet)),
+        u256Word(p.positionId),
+        u256Word(BigInt(label.length)),
+        bytesWord(label),
+      ]),
+    ),
+  );
 }
 
 export function offchainOperatorId(p: PositionInput): string {
   return hexEncode(blake3(preimage("NOX_OPERATOR_BLAKE3_V1", p)));
+}
+
+function concatWords(words: Uint8Array[]): Uint8Array {
+  const out = new Uint8Array(words.length * 32);
+  words.forEach((w, i) => out.set(w, i * 32));
+  return out;
+}
+
+function u256Word(value: bigint): Uint8Array {
+  const out = new Uint8Array(32);
+  let v = value;
+  for (let i = 31; i >= 0; i--) {
+    out[i] = Number(v & 0xffn);
+    v >>= 8n;
+  }
+  return out;
+}
+
+function addressWord(addr: Uint8Array): Uint8Array {
+  const out = new Uint8Array(32);
+  out.set(addr, 12);
+  return out;
+}
+
+function bytesWord(bytes: Uint8Array): Uint8Array {
+  const out = new Uint8Array(32);
+  out.set(bytes);
+  return out;
 }

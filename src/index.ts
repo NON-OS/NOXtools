@@ -1,4 +1,5 @@
 export type { PositionInput, StakeReceipt, SafeTx } from "./types.js";
+export { MAINNET_DEPLOYMENT, knownDeployment, type Deployment } from "./deployment.js";
 export { normalizeNamespace, namespaceHash, namespaceType, type NamespaceType } from "./namespace.js";
 export { tierName, tierFor, type TierName } from "./tier.js";
 export { onchainOperatorId, offchainOperatorId } from "./operator.js";

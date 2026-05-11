@@ -39,11 +39,11 @@ const TYPES = {
 };
 
 export const CANONICAL_ONCHAIN_ID =
-  "0x33899db027ffb191514764dcd54da7e0528e884b45e1c1e6ef900623cc97a4dd";
+  "0x454aa5f7e481c83fea729308e1e3f07058984bac4780fa3597cfe5565e78d781";
 export const CANONICAL_OFFCHAIN_ID =
   "0x3dfd79efa11fa1feb1aa272e5c5740ddc9913d00cee04693e57eac0a4b124bb1";
 export const CANONICAL_RECEIPT_HASH =
-  "0xe9c307fb2f7a1b4d1bdf63c80a73f41f9d51696dddcb35253aad2ae4cd1e701c";
+  "0x8821e40e16f0a2b89d7d95338e431f3d745c4d428f84ac6387998d87780f85b7";
 
 describe("NoxStakeReceipt cross-check vs ethers TypedDataEncoder", () => {
   it("operator ids match canonical values", () => {

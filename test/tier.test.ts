@@ -14,10 +14,18 @@ describe("tier", () => {
 
   it("thresholds assign correctly", () => {
     expect(tierFor(0n)).toBe(0);
-    expect(tierFor(1n)).toBe(1);
-    expect(tierFor(10_000_000_000_000_000_000_000n)).toBe(2);
-    expect(tierFor(50_000_000_000_000_000_000_000n)).toBe(3);
-    expect(tierFor(250_000_000_000_000_000_000_000n)).toBe(4);
+    expect(tierFor(100_000_000_000_000_000_000n)).toBe(1);
+    expect(tierFor(1_000_000_000_000_000_000_000n)).toBe(2);
+    expect(tierFor(10_000_000_000_000_000_000_000n)).toBe(3);
+    expect(tierFor(100_000_000_000_000_000_000_000n)).toBe(4);
     expect(tierFor(1_000_000_000_000_000_000_000_000n)).toBe(5);
+  });
+
+  it("keeps just-below-threshold values in the lower tier", () => {
+    expect(tierFor(99_999_999_999_999_999_999n)).toBe(0);
+    expect(tierFor(999_999_999_999_999_999_999n)).toBe(1);
+    expect(tierFor(9_999_999_999_999_999_999_999n)).toBe(2);
+    expect(tierFor(99_999_999_999_999_999_999_999n)).toBe(3);
+    expect(tierFor(999_999_999_999_999_999_999_999n)).toBe(4);
   });
 });
