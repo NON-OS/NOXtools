@@ -73,8 +73,10 @@ await live.token.allowance(wallet, MAINNET_DEPLOYMENT.stakingProxy);  // wei the
 
 To write (stake, claim, exit), see [stake.md](stake.md).
 
-## Anonymity
+## Routing and privacy
 
-To route the RPC through a Nym mixnet or Tor SOCKS5 exit in a server-side process, use a fetch wrapper or a SOCKS5-aware agent. See [nym.md](nym.md).
+To route the RPC through a proxy or Tor in a server-side process, set a
+SOCKS-aware fetch dispatcher before you connect. See [proxy.md](proxy.md).
 
-In the browser, anonymity is the browser's concern (Tor Browser, etc.).
+In the browser, egress is the browser's concern (Tor Browser, an OS-level proxy,
+and so on).

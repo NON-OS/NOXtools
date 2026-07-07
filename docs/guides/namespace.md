@@ -4,7 +4,7 @@ A namespace is a deterministic identifier owned by a wallet+position pair, regis
 
 ## Allowed shapes
 
-- `systems.nonos.<project>` - reserved for NØNOS systems.
+- `systems.nonos.<project>` - reserved for NON-OS systems.
 - `operator.<name>` - for operators.
 - `capsule.<name>` - for capsules.
 

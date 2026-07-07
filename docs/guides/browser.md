@@ -66,4 +66,5 @@ console.log(stats.totalStaked);
 ## What doesn't work in the browser
 
 - File-system reads (irrelevant - the SDK doesn't touch the filesystem).
-- Hardware wallet signers (out of SDK scope; see `noxctl safe propose` + the Safe UI).
+- Hardware wallet signers (out of SDK scope; build a Safe payload with
+  `nox.safe.tx` and sign in the Safe UI - see [safe-propose.md](safe-propose.md)).

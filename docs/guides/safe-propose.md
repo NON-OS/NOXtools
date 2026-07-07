@@ -1,8 +1,10 @@
 # Safe-first admin flow
 
-Admin actions never originate from the SDK or the CLI. They originate as a **Safe propose digest** that Safe owners sign through the Safe UI / hardware / WalletConnect.
+Admin actions do not originate from the SDK. The SDK builds the calldata and a
+Safe-compatible payload; Safe owners then sign it through the Safe UI, hardware,
+or WalletConnect. Nothing is signed or broadcast on your behalf.
 
-## SDK side - payload only
+## Build the Safe payload with the SDK
 
 ```ts
 import { Nox } from "@nonos/nox-staking-sdk";
@@ -14,27 +16,29 @@ const tx  = nox.safe.tx(
 );
 ```
 
-`tx` is a Safe-compatible payload `{ to, value, data, operation }`. It carries no digest and no signature.
+`tx` is a Safe-compatible payload `{ to, value, data, operation }`. It carries no
+digest and no signature. Compose the `data` from any calldata builder, for
+example:
 
-## CLI - full EIP-712 SafeTx digest
-
-```bash
-noxctl safe propose \
-  --safe   0x3a52ea60F61036Afbbec25F46a64485Ac4477Ccc \
-  --to     0xa94d6009790Ba13597A1E1b7cF4e1531eA513613 \
-  --data   0xdeadbeef \
-  --chain-id 1 \
-  --nonce  0
+```ts
+const data = nox.calldata.staking.stake(100n * 10n ** 18n);
+const tx   = nox.safe.tx(nox.deployment.stakingProxy, data);
 ```
 
-Output is JSON containing `safeTxHash`, the full `SafeTxV1` struct, and a no-auto-execute marker. Safe owners use the `safeTxHash` to sign in the Safe UI.
+## Propose it to the Safe
 
-Cross-check: `noxctl`'s digest is byte-identical to `ethers.TypedDataEncoder.hash(...)` (asserted in CI against a pinned vector).
+Hand the payload to your Safe. The Safe app computes the full EIP-712 `SafeTx`
+digest (`safeTxHash`) from the Safe address, chainId, and nonce, and owners sign
+that hash. Any of these work:
 
-## Inspect the Safe
+- Paste the `to`, `value`, and `data` into the Safe web app as a new transaction.
+- Feed the payload to the Safe SDK or the Safe Transaction Service from your own
+  tooling.
 
-```bash
-noxctl safe inspect --safe 0x3a52ea60F61036Afbbec25F46a64485Ac4477Ccc --rpc <url>
-```
+The staking Safe is `0x3a52ea60F61036Afbbec25F46a64485Ac4477Ccc`.
 
-Decodes `getOwners()`, `getThreshold()`, and `nonce()` into a typed JSON view.
+## Read the Safe
+
+Owners, threshold, and nonce are on-chain. Read them from the Safe web app, a
+block explorer, or your own `eth_call` against the Safe's `getOwners()`,
+`getThreshold()`, and `nonce()`. The SDK does not wrap these Safe-admin reads.

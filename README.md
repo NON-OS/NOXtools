@@ -179,7 +179,7 @@ Guides ship inside the package. After `npm install`, find them at
 - Sign receipt: [./docs/guides/sign-receipt.md](./docs/guides/sign-receipt.md)
 - Eligibility gates: [./docs/guides/eligibility.md](./docs/guides/eligibility.md)
 - Safe propose flow: [./docs/guides/safe-propose.md](./docs/guides/safe-propose.md)
-- Nym / SOCKS5 routing: [./docs/guides/nym.md](./docs/guides/nym.md)
+- Route RPC through a proxy or Tor: [./docs/guides/proxy.md](./docs/guides/proxy.md)
 
 ## Primitives (advanced)
 

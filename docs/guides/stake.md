@@ -1,8 +1,9 @@
 # Stake and manage a position
 
 This is the full staking lifecycle: connect, read state, approve, stake, claim,
-compound, and exit. While the website is in maintenance, this is the primary way
-to stake NOX.
+compound, and exit. It is the programmatic path to stake NOX; if you would rather
+click through a UI, run [`@nonos/nox-dashboard`](https://www.npmjs.com/package/@nonos/nox-dashboard),
+which drives the same SDK.
 
 The SDK never holds keys. It builds calldata, prepares an EIP-1559 plan against
 **your** RPC, and hands the plan to a signer you inject. Broadcasting also goes
@@ -50,7 +51,7 @@ const amount = 100n * NOX;          // 100 NOX
 const half   = 500n * (NOX / 2n);   // 250 NOX
 ```
 
-## The canonical flow: prepare → sign → send
+## The canonical flow: prepare -> sign -> send
 
 Every write uses the same three steps. Build it once and reuse it for the whole
 lifecycle:

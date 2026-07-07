@@ -7,11 +7,11 @@ Gate access to your frontend, JONOS preview, or capsule tooling using stake-deri
 | Tier | Name | Floor |
 |---|---|---|
 | 0 | Void | < 100 NOX |
-| 1 | Signal | ≥ 100 NOX |
-| 2 | Circuit | ≥ 1,000 NOX |
-| 3 | Capsule | ≥ 10,000 NOX |
-| 4 | Operator | ≥ 100,000 NOX |
-| 5 | ZeroState | ≥ 1,000,000 NOX |
+| 1 | Signal | >= 100 NOX |
+| 2 | Circuit | >= 1,000 NOX |
+| 3 | Capsule | >= 10,000 NOX |
+| 4 | Operator | >= 100,000 NOX |
+| 5 | ZeroState | >= 1,000,000 NOX |
 
 ## Classify a score
 
@@ -27,9 +27,9 @@ nox.tier.fromWei(50_000n * 10n ** 18n);  // 3
 ## Preset gates
 
 ```ts
-nox.eligibility.gateNox("jonos-preview",     "100");     // true (≥ Signal)
-nox.eligibility.gateNox("capsule-tooling",   "10000");   // true (≥ Capsule)
-nox.eligibility.gateNox("operator-waitlist", "100000");  // true (≥ Operator)
+nox.eligibility.gateNox("jonos-preview",     "100");     // true (>= Signal)
+nox.eligibility.gateNox("capsule-tooling",   "10000");   // true (>= Capsule)
+nox.eligibility.gateNox("operator-waitlist", "100000");  // true (>= Operator)
 ```
 
 ## On-chain access mask

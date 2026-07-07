@@ -34,9 +34,11 @@ That's a complete, self-verifiable ecosystem credential, derived locally with no
 
 ## Your first staking transaction
 
-While the website is in maintenance, the SDK is the primary way to stake. Connect
-your RPC, prepare a stake (this simulates on your RPC), sign with your wallet, and
-send. The SDK never holds keys.
+The SDK is the programmatic way to stake. Prefer a UI? Run
+[`@nonos/nox-dashboard`](https://www.npmjs.com/package/@nonos/nox-dashboard),
+which is built on this SDK. To do it in code: connect your RPC, prepare a stake
+(this simulates on your RPC), sign with your wallet, and send. The SDK never
+holds keys.
 
 ```ts
 import { Nox, MAINNET_DEPLOYMENT } from "@nonos/nox-staking-sdk";
@@ -58,7 +60,7 @@ works. See the full lifecycle in [Stake and manage a position](guides/stake.md).
 ## Next
 
 - [Stake and manage a position](guides/stake.md) - approve, stake, claim, compound, unstake, early-unlock.
-- [Sign a receipt](guides/sign-receipt.md) with a keystore.
+- [Sign a receipt](guides/sign-receipt.md) with an injected wallet signer.
 - [Read mainnet state](guides/read-onchain.md) via `nox.connect(rpcUrl)`.
 - [Browser / Vite setup](guides/browser.md).
 - [Recipes](RECIPES.md) - copy-paste snippets.

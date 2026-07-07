@@ -94,7 +94,7 @@ Nox.mainnet().safe.tx("0xstaking...", "0xdeadbeef");
 
 ---
 
-Staking writes below all use the prepare → sign → send pattern. `signer` is your
+Staking writes below all use the prepare -> sign -> send pattern. `signer` is your
 injected `{ address, signTransaction(tx) }` - the SDK holds no keys. See
 [stake.md](guides/stake.md) for the full lifecycle.
 

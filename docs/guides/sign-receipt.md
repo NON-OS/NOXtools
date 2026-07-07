@@ -1,6 +1,7 @@
 # Sign a receipt
 
-The SDK builds and verifies receipts. **Signing happens in your wallet** (or via `noxctl receipt sign` for keystore flows).
+The SDK builds and verifies receipts. **Signing happens in your wallet**, through
+a signer you inject. The SDK never holds keys.
 
 ## Build the typed-data payload
 
@@ -22,12 +23,15 @@ const proof = nox.proof.build({
 
 `proof.receipt` is the EIP-712 message. The domain is `{ name: "NOX Operator Kit", version: "1", chainId: 1, verifyingContract: stakingProxy }`.
 
-## Sign with ethers v6
+## Sign with an injected wallet (ethers v6)
+
+Any signer works: an injected browser wallet, a hardware bridge, or, for local
+development, an ethers `Wallet`. The SDK does not load keystores or private keys.
 
 ```ts
 import { Wallet } from "ethers";
 
-const signer = new Wallet(process.env.PK!);   // dev only
+const signer = new Wallet(process.env.PK!);   // dev only; use a real wallet in production
 
 const sig = await signer.signTypedData(
   { name: "NOX Operator Kit", version: "1", chainId: nox.chainId, verifyingContract: nox.deployment.stakingProxy },
@@ -50,25 +54,16 @@ const sig = await signer.signTypedData(
 );
 ```
 
-## Sign with `noxctl` (keystore, hardware-ish)
-
-```bash
-noxctl receipt sign --keystore ./operator.json \
-  --wallet 0xYourWallet --staking <stakingProxy> --chain-id 1 \
-  --position 0 --amount 10000000000000000000000 --lock-until 1900000000 \
-  --boost-bps 1500 --tier 3 --issued-at 1700000000 > signed.json
-```
-
 ## Verify locally
 
+The SDK recomputes the operator IDs and the body digest from the receipt and
+rejects any mismatch. No network and no backend are involved.
+
 ```ts
-nox.proof.verify(proof.receipt, proof.digest).valid;     // local checks
+nox.proof.verify(proof.receipt, proof.digest).valid;   // true if intact
 ```
 
-The full signature recovery + check pipeline lives in the CLI:
-
-```bash
-noxctl receipt verify signed.json
-```
-
-The CLI recomputes operator IDs, the body digest, the EIP-712 typed-data digest, recovers the signer, and rejects mismatches in wallet / chain / staking / digest / signer.
+To confirm who signed, recover the address from the EIP-712 signature with the
+same domain and types you signed under. That is a standard wallet-library call
+(`ethers.verifyTypedData(domain, types, proof.receipt, sig)`), and it should
+equal `proof.receipt.wallet`.
