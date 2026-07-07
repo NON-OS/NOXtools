@@ -17,6 +17,10 @@ export function unstakePosition(positionId: bigint): string {
   return packCall(STAKING.unstakePosition, [encodeUint256(positionId)]);
 }
 
+export function earlyUnlock(positionId: bigint): string {
+  return packCall(STAKING.earlyUnlock, [encodeUint256(positionId)]);
+}
+
 export function claimRewards(): string {
   return STAKING.claimRewards;
 }

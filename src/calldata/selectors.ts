@@ -3,6 +3,7 @@ export const STAKING = {
   stakeLocked:         "0x17b18c89",
   unstake:             "0x2e17de78",
   unstakePosition:     "0x4a235eb6",
+  earlyUnlock:         "0x36085c51",
   claimRewards:        "0x372500ab",
   compoundRewards:     "0x656c579f",
   bindZeroStatePass:   "0xf9e5db2e",
