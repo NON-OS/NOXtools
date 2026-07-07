@@ -18,9 +18,11 @@ export function stakingSurface(deployment: Deployment, call: Caller) {
 }
 
 function statsFromWords(w: bigint[]): StakingStats {
+  if (w.length < 7) throw new Error("staking stats: short return data");
   return { totalStaked: w[0]!, totalWeightedStake: w[1]!, rewardReserve: w[2]!, rewardsDistributed: w[3]!, penaltiesBurned: w[4]!, emissionRate: w[5]!, accRewardPerShare: w[6]! };
 }
 
 function healthFromWords(w: bigint[]): StakingHealth {
+  if (w.length < 5) throw new Error("staking health: short return data");
   return { rewardReserve: w[0]!, rewardRunway: w[1]!, totalStaked: w[2]!, emissionRate: w[3]!, paused: w[4]! !== 0n };
 }

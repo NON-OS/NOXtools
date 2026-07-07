@@ -1,5 +1,6 @@
 import { MAINNET_DEPLOYMENT, type Deployment } from "../deployment/index.js";
 import { NoxLive } from "../live/index.js";
+import type { RpcOptions } from "../rpc/index.js";
 import { CalldataSurface } from "./surfaces/calldata.js";
 import { EligibilitySurface } from "./surfaces/eligibility.js";
 import { NamespaceSurface } from "./surfaces/namespace.js";
@@ -31,5 +32,7 @@ export class Nox {
   }
 
   static mainnet(): Nox { return new Nox({ deployment: MAINNET_DEPLOYMENT }); }
-  connect(rpcUrl: string): NoxLive { return new NoxLive(rpcUrl, this.deployment, this.chainId); }
+  connect(rpcUrl: string, rpcOptions: RpcOptions = {}): NoxLive {
+    return new NoxLive(rpcUrl, this.deployment, this.chainId, rpcOptions);
+  }
 }
