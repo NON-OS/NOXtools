@@ -11,6 +11,19 @@ const live = nox.connect(rpcUrl);  // optional: typed reads of the live mainnet 
 
 NOX staking grants ecosystem rights. It does not grant kernel capabilities. Runtime authority flows through `CapsuleManifest`, not this SDK.
 
+## Just want to stake?
+
+This package is the library. If you want the app, run the dashboard locally in
+one command:
+
+```bash
+npx @nonos/nox-dashboard
+```
+
+It runs on your machine, connects your own RPC and wallet, and is built on this
+SDK. Source: <https://github.com/eKisNonos/NOXDashboard>. Hosted copy:
+<https://staking.nonos.software>.
+
 ## Install
 
 ```bash
