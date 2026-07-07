@@ -10,7 +10,7 @@ import { Nox } from "@nonos/nox-staking-sdk";
 const nox = Nox.mainnet();
 
 const proof = nox.proof.build({
-  wallet:     "0xYourWallet…",
+  wallet:     "0xYourWallet...",
   positionId: 0n,
   amount:     "10000",
   lockUntil:  new Date("2030-01-01"),

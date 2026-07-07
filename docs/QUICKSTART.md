@@ -16,7 +16,7 @@ import { Nox } from "@nonos/nox-staking-sdk";
 const nox = Nox.mainnet();
 
 const proof = nox.proof.build({
-  wallet:     "0xYourWallet…",
+  wallet:     "0xYourWallet...",
   positionId: 0n,
   amount:     "10000",          // 10,000 NOX as a decimal string
   lockUntil:  new Date("2030-01-01"),
@@ -57,8 +57,8 @@ works. See the full lifecycle in [Stake and manage a position](guides/stake.md).
 
 ## Next
 
-- [Stake and manage a position](guides/stake.md) — approve, stake, claim, compound, unstake, early-unlock.
+- [Stake and manage a position](guides/stake.md) - approve, stake, claim, compound, unstake, early-unlock.
 - [Sign a receipt](guides/sign-receipt.md) with a keystore.
 - [Read mainnet state](guides/read-onchain.md) via `nox.connect(rpcUrl)`.
 - [Browser / Vite setup](guides/browser.md).
-- [Recipes](RECIPES.md) — copy-paste snippets.
+- [Recipes](RECIPES.md) - copy-paste snippets.

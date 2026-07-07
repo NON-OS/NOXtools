@@ -1,6 +1,6 @@
 # Nym / SOCKS5 anonymity
 
-The SDK and CLI only ever make one kind of outbound call: a JSON-RPC POST to a URL you pass in. Both can route that call through any SOCKS5 endpoint — a local Nym mixnet client, Tor SOCKS5, or an internal hop.
+The SDK and CLI only ever make one kind of outbound call: a JSON-RPC POST to a URL you pass in. Both can route that call through any SOCKS5 endpoint - a local Nym mixnet client, Tor SOCKS5, or an internal hop.
 
 ## CLI
 

@@ -5,7 +5,7 @@ TypeScript SDK for NOX Command. One entry point, two modes.
 ```ts
 import { Nox } from "@nonos/nox-staking-sdk";
 
-const nox  = Nox.mainnet();        // pure: hashes, IDs, receipts, eligibility — no network
+const nox  = Nox.mainnet();        // pure: hashes, IDs, receipts, eligibility - no network
 const live = nox.connect(rpcUrl);  // optional: typed reads of the live mainnet contracts
 ```
 
@@ -24,11 +24,11 @@ Node 20+. ESM only. Browser-safe (only crypto dep is `@noble/hashes`).
 
 ## Concepts
 
-- **Operator ID** — deterministic identifier for a `(wallet, positionId)` pair. The on-chain variant matches `NOXStakingV4.operatorId(wallet, positionId)` exactly. The off-chain variant adds chainId + staking contract for off-chain namespacing.
-- **Namespace** — string under `systems.nonos.…`, `operator.…`, or `capsule.…`. Reserved on-chain in `NamespaceRegistry`.
-- **Stake receipt** — local typed-data bundle: position + both operator IDs + a body digest. Sign it as EIP-712 to make it portable.
-- **Local verification** — recompute everything from the receipt and reject mismatches. No backend involved. The SDK's `receiptDigest` is intentionally distinct from the contract's `stakeReceiptDigest`.
-- **Kernel separation** — nothing in this SDK signs `CapsuleManifest` or kernel grants. That's a separate runtime.
+- **Operator ID** - deterministic identifier for a `(wallet, positionId)` pair. The on-chain variant matches `NOXStakingV4.operatorId(wallet, positionId)` exactly. The off-chain variant adds chainId + staking contract for off-chain namespacing.
+- **Namespace** - string under `systems.nonos....`, `operator....`, or `capsule....`. Reserved on-chain in `NamespaceRegistry`.
+- **Stake receipt** - local typed-data bundle: position + both operator IDs + a body digest. Sign it as EIP-712 to make it portable.
+- **Local verification** - recompute everything from the receipt and reject mismatches. No backend involved. The SDK's `receiptDigest` is intentionally distinct from the contract's `stakeReceiptDigest`.
+- **Kernel separation** - nothing in this SDK signs `CapsuleManifest` or kernel grants. That's a separate runtime.
 
 ## The `Nox` class
 
@@ -42,7 +42,7 @@ nox.tier.fromNox("100000");                // 4 (Operator)
 nox.tier.nameFromNox("100000");            // "Operator"
 
 nox.operator.id({ wallet, positionId: 0n });
-// { onchain: "0x…", offchain: "0x…" }
+// { onchain: "0x...", offchain: "0x..." }
 
 const proof = nox.proof.build({
   wallet, positionId: 0n,
@@ -56,7 +56,7 @@ nox.proof.verify(proof.receipt, proof.digest).valid;
 
 nox.eligibility.gateNox("capsule-tooling", "10000");   // true
 
-nox.safe.tx("0xstaking…", "0xdeadbeef");
+nox.safe.tx("0xstaking...", "0xdeadbeef");
 ```
 
 ## The `NoxLive` client (optional, opt-in)
@@ -85,7 +85,7 @@ The SDK does not load private keys or own secret material. Signing is only throu
 ### Manage a stake
 
 While the website is in maintenance, this SDK is the primary way to stake. Every
-write is the same three steps — prepare (simulates on your RPC), sign (via your
+write is the same three steps - prepare (simulates on your RPC), sign (via your
 injected signer), send:
 
 ```ts
@@ -102,9 +102,8 @@ const { transactionHash, receipt } = await live.tx.sendAndWait(raw, true);
 ```
 
 The same pattern covers `approve`, `stakeLocked`, `claimRewards`,
-`compoundRewards`, `unstakePosition`, and `earlyUnlock`. Full lifecycle —
-approve, stake (flexible + locked), claim, compound, exit, and the early-unlock
-penalty — is in [Stake and manage a position](./docs/guides/stake.md).
+`compoundRewards`, `unstakePosition`, and `earlyUnlock`. Full lifecycle - approve, stake (flexible + locked), claim, compound, exit, and the early-unlock
+penalty - is in [Stake and manage a position](./docs/guides/stake.md).
 
 Receipt and revert helpers expose decoded and raw forms:
 
@@ -156,14 +155,14 @@ Guides ship inside the package. After `npm install`, find them at `node_modules/
 - Safe propose flow: [./docs/guides/safe-propose.md](./docs/guides/safe-propose.md)
 - Nym / SOCKS5 routing: [./docs/guides/nym.md](./docs/guides/nym.md)
 
-Repository: <https://github.com/NON-OS/NOX-Command>
+Repository: <https://github.com/NON-OS/NOXtools>
 
 ## SDK ↔ CLI
 
 | | |
 |---|---|
-| `@nonos/nox-staking-sdk` | this package — TypeScript/JavaScript |
-| `noxctl` | native CLI in the same repo — signs receipts, proposes Safe txs, decodes live state |
+| `@nonos/nox-staking-sdk` | this package - TypeScript/JavaScript |
+| `noxctl` | native CLI in the same repo - signs receipts, proposes Safe txs, decodes live state |
 | `@nonos/nox-core-wasm` | optional WASM build of the deterministic primitives |
 
 The SDK and CLI produce **byte-identical** operator IDs, namespace hashes, receipt digests, and EIP-712 typed-data digests. Both are cross-checked in CI against `ethers.TypedDataEncoder.hash`.
@@ -183,16 +182,16 @@ import {
 
 ## Build from source
 
-The SDK lives in the [NOX Command](https://github.com/NON-OS/NOX-Command)
-monorepo. Node 20+ is required. The package is ESM-only; its sole runtime
+The SDK is developed in the [NOXtools](https://github.com/NON-OS/NOXtools)
+repository. Node 20+ is required. The package is ESM-only; its sole runtime
 dependency is `@noble/hashes`.
 
 ```bash
-git clone https://github.com/NON-OS/NOX-Command.git
-cd NOX-Command
+git clone https://github.com/NON-OS/NOXtools.git
+cd NOXtools
 npm install
-npm -w @nonos/nox-staking-sdk run build   # tsc -> dist/
-npm -w @nonos/nox-staking-sdk test         # vitest
+npm run build   # tsc -> dist/
+npm test         # vitest
 ```
 
 `build` compiles TypeScript to `dist/`; `test` runs the vitest suite, including

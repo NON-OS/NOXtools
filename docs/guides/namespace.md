@@ -4,9 +4,9 @@ A namespace is a deterministic identifier owned by a wallet+position pair, regis
 
 ## Allowed shapes
 
-- `systems.nonos.<project>` — reserved for NØNOS systems.
-- `operator.<name>` — for operators.
-- `capsule.<name>` — for capsules.
+- `systems.nonos.<project>` - reserved for NØNOS systems.
+- `operator.<name>` - for operators.
+- `capsule.<name>` - for capsules.
 
 Rules: lowercase letters, digits, `.`, `-`. Max 96 chars.
 
@@ -47,6 +47,6 @@ const plan = await live.tx.prepare(wallet, nox.deployment.namespaceRegistry, dat
 If someone hands you a namespace + position + receipt, you can verify everything offline:
 
 ```ts
-const proof = nox.proof.build({ ...position, /* … */ }, "operator.alice");
+const proof = nox.proof.build({ ...position, /* ... */ }, "operator.alice");
 nox.proof.verify(proof.receipt, proof.digest).valid;  // true if intact
 ```

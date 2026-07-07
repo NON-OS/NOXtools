@@ -2,7 +2,7 @@
 
 Admin actions never originate from the SDK or the CLI. They originate as a **Safe propose digest** that Safe owners sign through the Safe UI / hardware / WalletConnect.
 
-## SDK side — payload only
+## SDK side - payload only
 
 ```ts
 import { Nox } from "@nonos/nox-staking-sdk";
@@ -16,7 +16,7 @@ const tx  = nox.safe.tx(
 
 `tx` is a Safe-compatible payload `{ to, value, data, operation }`. It carries no digest and no signature.
 
-## CLI — full EIP-712 SafeTx digest
+## CLI - full EIP-712 SafeTx digest
 
 ```bash
 noxctl safe propose \

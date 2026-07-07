@@ -42,7 +42,7 @@ nox.proof.verify(proof.receipt, proof.digest).valid;
 Nox.mainnet().eligibility.gateNox("capsule-tooling", "10000");  // true
 ```
 
-## live read — staking stats
+## live read - staking stats
 
 ```ts
 const live = Nox.mainnet().connect(rpc);
@@ -50,20 +50,20 @@ const stats = await live.staking.stats();
 console.log(stats.totalStaked);
 ```
 
-## live read — namespace owner
+## live read - namespace owner
 
 ```ts
 const live = Nox.mainnet().connect(rpc);
 await live.namespace.ownerOf("operator.alice");
 ```
 
-## live read — access mask
+## live read - access mask
 
 ```ts
 await Nox.mainnet().connect(rpc).access.mask(wallet);
 ```
 
-## live read — NOX balance
+## live read - NOX balance
 
 ```ts
 await Nox.mainnet().connect(rpc).token.balanceOf(wallet);
@@ -76,12 +76,12 @@ import { Nox } from "@nonos/nox-staking-sdk";
 const nox = new Nox({
   deployment: {
     chainId: 11155111, label: "sepolia",
-    stakingProxy:      "0x…",
-    stakingImpl:       "0x…",
-    namespaceRegistry: "0x…",
-    accessRegistry:    "0x…",
-    token:             "0x…",
-    safe:              "0x…",
+    stakingProxy:      "0x...",
+    stakingImpl:       "0x...",
+    namespaceRegistry: "0x...",
+    accessRegistry:    "0x...",
+    token:             "0x...",
+    safe:              "0x...",
   },
 });
 ```
@@ -89,13 +89,13 @@ const nox = new Nox({
 ## Safe payload (no signing, no broadcast)
 
 ```ts
-Nox.mainnet().safe.tx("0xstaking…", "0xdeadbeef");
+Nox.mainnet().safe.tx("0xstaking...", "0xdeadbeef");
 ```
 
 ---
 
 Staking writes below all use the prepare → sign → send pattern. `signer` is your
-injected `{ address, signTransaction(tx) }` — the SDK holds no keys. See
+injected `{ address, signTransaction(tx) }` - the SDK holds no keys. See
 [stake.md](guides/stake.md) for the full lifecycle.
 
 ```ts
@@ -160,7 +160,7 @@ await send(staking, nox.calldata.staking.compoundRewards(0n), signer);
 await send(staking, nox.calldata.staking.unstakePosition(0n), signer);
 ```
 
-## early-unlock (still locked — burns ~5% penalty)
+## early-unlock (still locked - burns ~5% penalty)
 
 ```ts
 await send(staking, nox.calldata.staking.earlyUnlock(0n), signer);
@@ -169,6 +169,6 @@ await send(staking, nox.calldata.staking.earlyUnlock(0n), signer);
 ## decode a receipt / revert
 
 ```ts
-live.tx.decodeReceipt(rawReceipt);       // { status, logs, … }
-live.tx.decodeRevert("0x08c379a0…");     // { kind, reason?, selector? }
+live.tx.decodeReceipt(rawReceipt);       // { status, logs, ... }
+live.tx.decodeRevert("0x08c379a0...");     // { kind, reason?, selector? }
 ```

@@ -6,7 +6,7 @@ to stake NOX.
 
 The SDK never holds keys. It builds calldata, prepares an EIP-1559 plan against
 **your** RPC, and hands the plan to a signer you inject. Broadcasting also goes
-through your RPC only — there is no fallback endpoint and no telemetry.
+through your RPC only - there is no fallback endpoint and no telemetry.
 
 ## 1. Connect
 
@@ -16,7 +16,7 @@ import { Nox, MAINNET_DEPLOYMENT } from "@nonos/nox-staking-sdk";
 const nox  = Nox.mainnet();
 const live = nox.connect("https://eth-mainnet.example/v2/<KEY>");
 
-const wallet   = "0xYourWallet…";
+const wallet   = "0xYourWallet...";
 const staking  = MAINNET_DEPLOYMENT.stakingProxy;   // where stake/claim/exit calls go
 const token    = MAINNET_DEPLOYMENT.token;          // NOX ERC-20
 ```
@@ -59,14 +59,14 @@ lifecycle:
 import type { TransactionSigner } from "@nonos/nox-staking-sdk";
 
 async function send(to: `0x${string}`, data: string, signer: TransactionSigner) {
-  // 1. prepare — runs eth_call + gas + nonce + fees on your RPC, no signing
+  // 1. prepare - runs eth_call + gas + nonce + fees on your RPC, no signing
   const plan = await live.tx.prepare(wallet, to, data as `0x${string}`);
 
   // simulate-before-sign: `simulationResult` is the eth_call return.
-  // If the call would revert, prepare throws here — before any signature.
+  // If the call would revert, prepare throws here - before any signature.
   console.log("simulated ok:", plan.simulationResult);
 
-  // 2. sign — via YOUR injected signer. The SDK holds no keys.
+  // 2. sign - via YOUR injected signer. The SDK holds no keys.
   //    Throws if signer.address !== wallet.
   const raw = await live.tx.sign(signer, plan.tx);
 
@@ -76,7 +76,7 @@ async function send(to: `0x${string}`, data: string, signer: TransactionSigner) 
 }
 ```
 
-`signer` is anything shaped `{ address, signTransaction(tx) }` — an injected
+`signer` is anything shaped `{ address, signTransaction(tx) }` - an injected
 browser wallet adapter, a hardware bridge, or a dev key. See
 [sign-receipt.md](sign-receipt.md) for wiring a signer.
 
@@ -127,7 +127,7 @@ await send(staking, lockData, signer);
 ```
 
 Locked stake counts toward a higher tier weight but cannot be withdrawn before
-the lock ends — except via `earlyUnlock` (see below), which pays a penalty.
+the lock ends - except via `earlyUnlock` (see below), which pays a penalty.
 
 ## 5. Claim and compound
 
@@ -164,7 +164,7 @@ simulates first, you find out at prepare time, not after signing.
 ### Early unlock (still locked)
 
 `earlyUnlock` exits a position that is still locked. The contract **burns the
-early-unlock penalty** — currently **5%** of the position — and returns the
+early-unlock penalty** - currently **5%** of the position - and returns the
 rest to you. It **reverts if the position is not locked** (use
 `unstakePosition` for those).
 
@@ -183,7 +183,7 @@ try {
   await send(staking, exitData, signer);
 } catch (err) {
   // If you captured raw revert data, decode it:
-  // live.tx.decodeRevert("0x08c379a0…") -> { kind, reason?, selector? }
+  // live.tx.decodeRevert("0x08c379a0...") -> { kind, reason?, selector? }
 }
 ```
 
@@ -191,7 +191,7 @@ Decode a mined receipt (events, status):
 
 ```ts
 const { receipt } = await send(staking, stakeData, signer);
-// `receipt` is already decoded by sendAndWait(…, true).
+// `receipt` is already decoded by sendAndWait(..., true).
 // To decode a raw receipt fetched elsewhere: live.tx.decodeReceipt(rawReceipt)
 ```
 
@@ -214,7 +214,7 @@ build a Safe payload instead of preparing a plan:
 
 ```ts
 nox.safe.tx(staking, nox.calldata.staking.stake(100n * NOX));
-// { to, value, data, operation } — sign in the Safe UI
+// { to, value, data, operation } - sign in the Safe UI
 ```
 
 See [safe-propose.md](safe-propose.md).

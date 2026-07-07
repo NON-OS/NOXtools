@@ -52,7 +52,7 @@ interface StakingHealth {
 
 ```ts
 const owner = await live.namespace.ownerOf("operator.alice");
-// "0x0000…0000" if unclaimed
+// "0x0000...0000" if unclaimed
 
 const ok = await live.namespace.canReserve(wallet, 0n, "operator.alice");
 ```
