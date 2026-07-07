@@ -1,15 +1,14 @@
 {
   "name": "@nonos/nox-staking-sdk",
   "version": "0.2.0",
-  "description": "Local-first TypeScript SDK for NOX Command. Nox / NoxLive client, EIP-712 receipts, namespaces, tiers, and pinned mainnet deployment.",
+  "description": "Local-first TypeScript SDK for NOX staking. Nox / NoxLive client, EIP-712 receipts, namespaces, tiers, and pinned mainnet deployment.",
   "license": "AGPL-3.0-or-later",
-  "homepage": "https://github.com/NON-OS/NOX-Command",
+  "homepage": "https://github.com/NON-OS/NOXtools",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NON-OS/NOX-Command.git",
-    "directory": "packages/nox-staking-sdk"
+    "url": "https://github.com/NON-OS/NOXtools.git"
   },
-  "bugs": "https://github.com/NON-OS/NOX-Command/issues",
+  "bugs": "https://github.com/NON-OS/NOXtools/issues",
   "keywords": [
     "nox",
     "nonos",

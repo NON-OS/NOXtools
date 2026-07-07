@@ -1,0 +1,34 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build-test:
+    name: build · test · adversarial
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+      - run: npm ci
+      - run: npm run build
+      - run: npm test
+      - name: adversarial suite (malicious-rpc / hostile-input PoCs)
+        run: npx vitest run redteam hardening
+      - name: dependency audit (runtime deps)
+        run: npm audit --omit=dev
+      - name: source-provenance scan (human-attributed only)
+        run: |
+          set -e
+          PATTERN="$(printf '\143\154\141\165\144\145|\141\156\164\150\162\157\160\151\143|\143\157\160\151\154\157\164|\157\160\145\156\141\151')"
+          if grep -rIniE "$PATTERN" \
+              --exclude-dir=.git --exclude-dir=node_modules --exclude-dir=dist . ; then
+            echo "source-provenance scan failed - repository must be human-attributed only"
+            exit 1
+          fi
+          echo "clean"
