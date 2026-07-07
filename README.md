@@ -1,6 +1,29 @@
-# @nonos/nox-staking-sdk
+# NOX staking tools
 
-TypeScript SDK for NOX Command. One entry point, two modes.
+Local-first tools for staking NOX on Ethereum mainnet. Your keys, your RPC, no
+servers, no telemetry. Two pieces, one repository:
+
+- **Dashboard** (app, for stakers) - `@nonos/nox-dashboard`. A browser UI you
+  run on your own machine.
+- **SDK** (library, for builders) - `@nonos/nox-staking-sdk`. Typed calldata,
+  live reads, receipts, and hashing. This package.
+
+Stake NOX without trusting a website.
+
+## Stakers: run the dashboard
+
+One command. It runs on your machine, connects your own RPC and wallet, and is
+built on the SDK below.
+
+```bash
+npx @nonos/nox-dashboard
+```
+
+Source: <https://github.com/NON-OS/NOXDashboard> (mounted in this repo under
+`dashboard/`). Hosted copy: <https://staking.nonos.software>, byte-identical to
+what you run yourself.
+
+## Builders: use the SDK
 
 ```ts
 import { Nox } from "@nonos/nox-staking-sdk";
@@ -9,23 +32,6 @@ const nox  = Nox.mainnet();        // pure: hashes, IDs, receipts, eligibility -
 const live = nox.connect(rpcUrl);  // optional: typed reads of the live mainnet contracts
 ```
 
-NOX staking grants ecosystem rights. It does not grant kernel capabilities. Runtime authority flows through `CapsuleManifest`, not this SDK.
-
-## Just want to stake?
-
-This package is the library. If you want the app, run the dashboard locally in
-one command:
-
-```bash
-npx @nonos/nox-dashboard
-```
-
-It runs on your machine, connects your own RPC and wallet, and is built on this
-SDK. Source: <https://github.com/eKisNonos/NOXDashboard>. Hosted copy:
-<https://staking.nonos.software>.
-
-## Install
-
 ```bash
 npm  install @nonos/nox-staking-sdk
 pnpm add     @nonos/nox-staking-sdk
@@ -33,7 +39,10 @@ yarn add     @nonos/nox-staking-sdk
 bun  add     @nonos/nox-staking-sdk
 ```
 
-Node 20+. ESM only. Browser-safe (only crypto dep is `@noble/hashes`).
+Node 20+. ESM only. Browser-safe (only crypto dependency is `@noble/hashes`).
+
+NOX staking grants ecosystem rights. It does not grant kernel capabilities.
+Runtime authority flows through `CapsuleManifest`, not this SDK.
 
 ## Concepts
 
@@ -41,7 +50,7 @@ Node 20+. ESM only. Browser-safe (only crypto dep is `@noble/hashes`).
 - **Namespace** - string under `systems.nonos....`, `operator....`, or `capsule....`. Reserved on-chain in `NamespaceRegistry`.
 - **Stake receipt** - local typed-data bundle: position + both operator IDs + a body digest. Sign it as EIP-712 to make it portable.
 - **Local verification** - recompute everything from the receipt and reject mismatches. No backend involved. The SDK's `receiptDigest` is intentionally distinct from the contract's `stakeReceiptDigest`.
-- **Kernel separation** - nothing in this SDK signs `CapsuleManifest` or kernel grants. That's a separate runtime.
+- **Kernel separation** - nothing in this SDK signs `CapsuleManifest` or kernel grants. That is a separate runtime.
 
 ## The `Nox` class
 
@@ -85,7 +94,7 @@ await live.access.has(wallet, 1);
 await live.token.balanceOf(wallet);
 ```
 
-`live.tx` can prepare an EIP-1559 transaction plan for calldata you provide:
+`live.tx` prepares an EIP-1559 transaction plan for calldata you provide:
 
 ```ts
 const plan = await live.tx.prepare(wallet, MAINNET_DEPLOYMENT.stakingProxy, nox.calldata.staking.stake(amountWei));
@@ -93,13 +102,13 @@ const raw  = await live.tx.sign(injectedSigner, plan.tx);
 const sent = await live.tx.sendAndWait(raw, true);
 ```
 
-The SDK does not load private keys or own secret material. Signing is only through an injected signer implementing `{ address, signTransaction(tx) }`.
+The SDK does not load private keys or own secret material. Signing is only
+through an injected signer implementing `{ address, signTransaction(tx) }`.
 
 ### Manage a stake
 
-While the website is in maintenance, this SDK is the primary way to stake. Every
-write is the same three steps - prepare (simulates on your RPC), sign (via your
-injected signer), send:
+Every write is the same three steps: prepare (simulates on your RPC), sign (via
+your injected signer), send.
 
 ```ts
 import { Nox, MAINNET_DEPLOYMENT } from "@nonos/nox-staking-sdk";
@@ -115,8 +124,9 @@ const { transactionHash, receipt } = await live.tx.sendAndWait(raw, true);
 ```
 
 The same pattern covers `approve`, `stakeLocked`, `claimRewards`,
-`compoundRewards`, `unstakePosition`, and `earlyUnlock`. Full lifecycle - approve, stake (flexible + locked), claim, compound, exit, and the early-unlock
-penalty - is in [Stake and manage a position](./docs/guides/stake.md).
+`compoundRewards`, `unstakePosition`, and `earlyUnlock`. Full lifecycle -
+approve, stake (flexible and locked), claim, compound, exit, and the
+early-unlock penalty - is in [Stake and manage a position](./docs/guides/stake.md).
 
 Receipt and revert helpers expose decoded and raw forms:
 
@@ -126,9 +136,8 @@ const decodedRevert = live.tx.decodeRevert("0x...");
 const endpointPlan = live.tx.privacyReport(false);
 ```
 
-`privacyReport(false)` performs no network request. Constructors do not perform network I/O; explicit methods do.
-
-Safe/calldata mode remains available through `nox.safe.tx(...)` and `nox.calldata`.
+`privacyReport(false)` performs no network request. Constructors do not perform
+network I/O; explicit methods do.
 
 ## Live mainnet (chain 1)
 
@@ -143,19 +152,23 @@ MAINNET_DEPLOYMENT.token               // 0x0a26c80Be4E060e688d7C23aDdB92cBb5D2C
 MAINNET_DEPLOYMENT.safe                // 0x3a52ea60F61036Afbbec25F46a64485Ac4477Ccc
 ```
 
-## Browser
+## Security and sovereignty
 
-```tsx
-import { Nox } from "@nonos/nox-staking-sdk";
-const nox = Nox.mainnet();
-document.body.innerText = nox.namespace.hash("operator.alice");
-```
-
-Works in Vite / Webpack 5 / esbuild / Rollup / Next.js without bundler config.
+- Your keys never leave your machine. The SDK holds no secret material; signing
+  is only through a signer you inject.
+- Your RPC only. No fallback endpoint is ever used.
+- No telemetry, no analytics, no third-party calls.
+- Nothing is broadcast without your explicit action.
+- Every value decoded from an RPC response is bounds-checked; hostile-input and
+  malicious-endpoint cases are covered by an adversarial test suite that runs in
+  CI on Linux, macOS, and Windows.
+- Safe and hardware wallet flows are supported through `nox.safe.tx` and
+  `nox.calldata` for balances that warrant them.
 
 ## Documentation
 
-Guides ship inside the package. After `npm install`, find them at `node_modules/@nonos/nox-staking-sdk/docs/`.
+Guides ship inside the package. After `npm install`, find them at
+`node_modules/@nonos/nox-staking-sdk/docs/`.
 
 - Quickstart: [./docs/QUICKSTART.md](./docs/QUICKSTART.md)
 - Recipes: [./docs/RECIPES.md](./docs/RECIPES.md)
@@ -168,21 +181,9 @@ Guides ship inside the package. After `npm install`, find them at `node_modules/
 - Safe propose flow: [./docs/guides/safe-propose.md](./docs/guides/safe-propose.md)
 - Nym / SOCKS5 routing: [./docs/guides/nym.md](./docs/guides/nym.md)
 
-Repository: <https://github.com/NON-OS/NOXtools>
-
-## SDK ↔ CLI
-
-| | |
-|---|---|
-| `@nonos/nox-staking-sdk` | this package - TypeScript/JavaScript |
-| `noxctl` | native CLI in the same repo - signs receipts, proposes Safe txs, decodes live state |
-| `@nonos/nox-core-wasm` | optional WASM build of the deterministic primitives |
-
-The SDK and CLI produce **byte-identical** operator IDs, namespace hashes, receipt digests, and EIP-712 typed-data digests. Both are cross-checked in CI against `ethers.TypedDataEncoder.hash`.
-
 ## Primitives (advanced)
 
-Lower-level functions are still exported for power users who don't want the `Nox` facade:
+Lower-level functions are exported for callers who do not want the `Nox` facade:
 
 ```ts
 import {
@@ -195,22 +196,21 @@ import {
 
 ## Build from source
 
-The SDK is developed in the [NOXtools](https://github.com/NON-OS/NOXtools)
-repository. Node 20+ is required. The package is ESM-only; its sole runtime
-dependency is `@noble/hashes`.
-
 ```bash
-git clone https://github.com/NON-OS/NOXtools.git
+# --recursive also checks out the dashboard app under dashboard/
+git clone --recursive https://github.com/NON-OS/NOXtools.git
 cd NOXtools
+
 npm install
 npm run build   # tsc -> dist/
-npm test         # vitest
+npm test        # vitest, incl. the adversarial suite
 ```
 
-`build` compiles TypeScript to `dist/`; `test` runs the vitest suite, including
-cross-checks against `ethers` for operator IDs, namespace hashes, and EIP-712
-digests.
+The SDK builds standalone; the `dashboard/` submodule is only needed if you want
+to build the app too (`cd dashboard && npm install && npm run build`). If you
+already cloned without `--recursive`, run `git submodule update --init`.
 
 ## License
 
-AGPL-3.0-or-later.
+AGPL-3.0-or-later. The source is public so you can read it, build it, and run it
+yourself.
