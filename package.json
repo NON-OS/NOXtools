@@ -1,17 +1,27 @@
 {
   "name": "@nonos/nox-staking-sdk",
   "version": "0.2.0",
-  "description": "Local-first TypeScript SDK for the NOX Operator Kit. Nox / NoxLive client, EIP-712 receipts, namespaces, tiers, and pinned mainnet deployment.",
+  "description": "Local-first TypeScript SDK for NOX Command. Nox / NoxLive client, EIP-712 receipts, namespaces, tiers, and pinned mainnet deployment.",
   "license": "AGPL-3.0-or-later",
-  "homepage": "https://github.com/NON-OS/noxcli-sdk",
+  "homepage": "https://github.com/NON-OS/NOX-Command",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NON-OS/noxcli-sdk.git",
+    "url": "https://github.com/NON-OS/NOX-Command.git",
     "directory": "packages/nox-staking-sdk"
   },
-  "bugs": "https://github.com/NON-OS/noxcli-sdk/issues",
-  "keywords": ["nox", "nonos", "staking", "eip-712", "safe", "operator", "credential"],
-  "engines": { "node": ">=20" },
+  "bugs": "https://github.com/NON-OS/NOX-Command/issues",
+  "keywords": [
+    "nox",
+    "nonos",
+    "staking",
+    "eip-712",
+    "safe",
+    "operator",
+    "credential"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "type": "module",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -22,13 +32,18 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist", "docs", "README.md", "LICENSE"],
+  "files": [
+    "dist",
+    "docs",
+    "README.md",
+    "LICENSE"
+  ],
   "publishConfig": {
     "access": "public",
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "tsc -p .",
+    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p .",
     "test": "vitest run",
     "prepublishOnly": "npm run build",
     "fmt": "echo skip"
