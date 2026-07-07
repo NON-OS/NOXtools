@@ -42,7 +42,8 @@
     "registry": "https://registry.npmjs.org/"
   },
   "scripts": {
-    "build": "node -e \"fs.rmSync('dist',{recursive:true,force:true})\" && tsc -p .",
+    "clean": "node -e \"require('fs').rmSync('dist',{recursive:true,force:true})\"",
+    "build": "npm run clean && tsc -p .",
     "test": "vitest run",
     "prepublishOnly": "npm run build",
     "fmt": "echo skip"
