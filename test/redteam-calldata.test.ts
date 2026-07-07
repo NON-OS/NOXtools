@@ -15,7 +15,7 @@ import type { StakeReceipt } from "../src/core/types.js";
 // byte through, colliding "operator.<KELVIN>ey" with "operator.key".
 // crates/nox-core/src/namespace.rs runs `.to_ascii_lowercase()` and checks each
 // RAW byte is ascii. TS now ASCII-lowercases only, so the charset regex rejects
-// the non-ASCII byte up front — matching Rust's InvalidNamespace.
+// the non-ASCII byte up front - matching Rust's InvalidNamespace.
 // ---------------------------------------------------------------------------
 describe("FIXED 1: namespace homoglyph collision (TS now matches Rust)", () => {
   const KELVIN = "K"; // KELVIN SIGN, lowercases to "k" under full-Unicode fold

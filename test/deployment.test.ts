@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isAddress } from "viem";
+import { getAddress } from "ethers";
 import { knownDeployment, MAINNET_DEPLOYMENT } from "../src/deployment/index.js";
 
 describe("deployment constants", () => {
@@ -21,7 +21,9 @@ describe("deployment constants", () => {
       MAINNET_DEPLOYMENT.safe,
     ];
     for (const address of addresses) {
-      expect(isAddress(address, { strict: true }), address).toBe(true);
+      // getAddress returns the EIP-55 checksummed form and throws on a bad
+      // mixed-case checksum; equality proves the pinned address is strict.
+      expect(getAddress(address), address).toBe(address);
     }
   });
 
