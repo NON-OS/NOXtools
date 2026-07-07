@@ -19,6 +19,13 @@ const stats  = await live.staking.stats();
 const health = await live.staking.health();
 ```
 
+Per-wallet reads:
+
+```ts
+await live.staking.pendingRewards(wallet);        // claimable rewards, wei
+await live.staking.activePositionCount(wallet);   // open positions, bigint
+```
+
 Returns typed structs:
 
 ```ts
@@ -60,8 +67,11 @@ await live.access.mask(wallet);      // bigint
 ## Token (NOX ERC-20)
 
 ```ts
-await live.token.balanceOf(wallet);  // bigint, raw wei
+await live.token.balanceOf(wallet);              // bigint, raw wei
+await live.token.allowance(wallet, MAINNET_DEPLOYMENT.stakingProxy);  // wei the staking contract may pull
 ```
+
+To write (stake, claim, exit), see [stake.md](stake.md).
 
 ## Anonymity
 

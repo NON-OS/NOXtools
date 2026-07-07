@@ -1,6 +1,6 @@
 # @nonos/nox-staking-sdk
 
-TypeScript SDK for the NOX Operator Kit. One entry point, two modes.
+TypeScript SDK for NOX Command. One entry point, two modes.
 
 ```ts
 import { Nox } from "@nonos/nox-staking-sdk";
@@ -72,7 +72,51 @@ await live.access.has(wallet, 1);
 await live.token.balanceOf(wallet);
 ```
 
-No transactions. Reads only. Use `ethers` / `viem` / your own client for writes.
+`live.tx` can prepare an EIP-1559 transaction plan for calldata you provide:
+
+```ts
+const plan = await live.tx.prepare(wallet, MAINNET_DEPLOYMENT.stakingProxy, nox.calldata.staking.stake(amountWei));
+const raw  = await live.tx.sign(injectedSigner, plan.tx);
+const sent = await live.tx.sendAndWait(raw, true);
+```
+
+The SDK does not load private keys or own secret material. Signing is only through an injected signer implementing `{ address, signTransaction(tx) }`.
+
+### Manage a stake
+
+While the website is in maintenance, this SDK is the primary way to stake. Every
+write is the same three steps — prepare (simulates on your RPC), sign (via your
+injected signer), send:
+
+```ts
+import { Nox, MAINNET_DEPLOYMENT } from "@nonos/nox-staking-sdk";
+
+const nox     = Nox.mainnet();
+const live    = nox.connect(rpcUrl);
+const staking = MAINNET_DEPLOYMENT.stakingProxy;
+const amount  = 100n * 10n ** 18n;                 // 100 NOX in wei
+
+const plan = await live.tx.prepare(wallet, staking, nox.calldata.staking.stake(amount));
+const raw  = await live.tx.sign(injectedSigner, plan.tx);  // SDK holds no keys
+const { transactionHash, receipt } = await live.tx.sendAndWait(raw, true);
+```
+
+The same pattern covers `approve`, `stakeLocked`, `claimRewards`,
+`compoundRewards`, `unstakePosition`, and `earlyUnlock`. Full lifecycle —
+approve, stake (flexible + locked), claim, compound, exit, and the early-unlock
+penalty — is in [Stake and manage a position](./docs/guides/stake.md).
+
+Receipt and revert helpers expose decoded and raw forms:
+
+```ts
+const decodedReceipt = live.tx.decodeReceipt(rawReceipt);
+const decodedRevert = live.tx.decodeRevert("0x...");
+const endpointPlan = live.tx.privacyReport(false);
+```
+
+`privacyReport(false)` performs no network request. Constructors do not perform network I/O; explicit methods do.
+
+Safe/calldata mode remains available through `nox.safe.tx(...)` and `nox.calldata`.
 
 ## Live mainnet (chain 1)
 
@@ -84,7 +128,7 @@ MAINNET_DEPLOYMENT.stakingImpl         // 0x415790B1f0aecd18B24D53BEaa2559757337
 MAINNET_DEPLOYMENT.namespaceRegistry   // 0xD554ae30A0D20CB988c40d6C3b3d907740B9FD5C
 MAINNET_DEPLOYMENT.accessRegistry      // 0x31140F839E2BB03C903ca894A87DF40c7333d38b
 MAINNET_DEPLOYMENT.token               // 0x0a26c80Be4E060e688d7C23aDdB92cBb5D2C9eCA
-MAINNET_DEPLOYMENT.safe                // 0x3a52eA60F61036aFBBeC25F46A64485aC4477CCC
+MAINNET_DEPLOYMENT.safe                // 0x3a52ea60F61036Afbbec25F46a64485Ac4477Ccc
 ```
 
 ## Browser
@@ -103,6 +147,7 @@ Guides ship inside the package. After `npm install`, find them at `node_modules/
 
 - Quickstart: [./docs/QUICKSTART.md](./docs/QUICKSTART.md)
 - Recipes: [./docs/RECIPES.md](./docs/RECIPES.md)
+- Stake and manage a position: [./docs/guides/stake.md](./docs/guides/stake.md)
 - Browser usage: [./docs/guides/browser.md](./docs/guides/browser.md)
 - Read on-chain state: [./docs/guides/read-onchain.md](./docs/guides/read-onchain.md)
 - Namespace guide: [./docs/guides/namespace.md](./docs/guides/namespace.md)
@@ -111,7 +156,7 @@ Guides ship inside the package. After `npm install`, find them at `node_modules/
 - Safe propose flow: [./docs/guides/safe-propose.md](./docs/guides/safe-propose.md)
 - Nym / SOCKS5 routing: [./docs/guides/nym.md](./docs/guides/nym.md)
 
-Repository: <https://github.com/NON-OS/noxcli-sdk>
+Repository: <https://github.com/NON-OS/NOX-Command>
 
 ## SDK ↔ CLI
 
@@ -135,6 +180,24 @@ import {
   safeTx,
 } from "@nonos/nox-staking-sdk";
 ```
+
+## Build from source
+
+The SDK lives in the [NOX Command](https://github.com/NON-OS/NOX-Command)
+monorepo. Node 20+ is required. The package is ESM-only; its sole runtime
+dependency is `@noble/hashes`.
+
+```bash
+git clone https://github.com/NON-OS/NOX-Command.git
+cd NOX-Command
+npm install
+npm -w @nonos/nox-staking-sdk run build   # tsc -> dist/
+npm -w @nonos/nox-staking-sdk test         # vitest
+```
+
+`build` compiles TypeScript to `dist/`; `test` runs the vitest suite, including
+cross-checks against `ethers` for operator IDs, namespace hashes, and EIP-712
+digests.
 
 ## License
 

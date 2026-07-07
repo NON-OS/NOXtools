@@ -20,7 +20,7 @@ const tx  = nox.safe.tx(
 
 ```bash
 noxctl safe propose \
-  --safe   0x3a52eA60F61036aFBBeC25F46A64485aC4477CCC \
+  --safe   0x3a52ea60F61036Afbbec25F46a64485Ac4477Ccc \
   --to     0xa94d6009790Ba13597A1E1b7cF4e1531eA513613 \
   --data   0xdeadbeef \
   --chain-id 1 \
@@ -34,7 +34,7 @@ Cross-check: `noxctl`'s digest is byte-identical to `ethers.TypedDataEncoder.has
 ## Inspect the Safe
 
 ```bash
-noxctl safe inspect --safe 0x3a52eA60F61036aFBBeC25F46A64485aC4477CCC --rpc <url>
+noxctl safe inspect --safe 0x3a52ea60F61036Afbbec25F46a64485Ac4477Ccc --rpc <url>
 ```
 
 Decodes `getOwners()`, `getThreshold()`, and `nonce()` into a typed JSON view.

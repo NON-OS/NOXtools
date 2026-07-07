@@ -38,11 +38,12 @@ If your gate also needs to consult `AccessRegistry`:
 
 ```ts
 const live = nox.connect(rpc);
-const ok   = await live.access.has(wallet, AccessFlag.JonosPreview);
-const mask = await live.access.mask(wallet);
+const ok   = await live.access.has(wallet, 1);   // flag index, e.g. 1
+const mask = await live.access.mask(wallet);     // uint256 bitfield, bigint
 ```
 
-`accessMask` is a `uint256` bitfield; check individual flags with bitwise ops.
+`mask` returns a `uint256` bitfield; check individual flags with bitwise ops
+(`(mask >> BigInt(flag)) & 1n`).
 
 ## Frontend pattern
 

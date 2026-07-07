@@ -35,7 +35,12 @@ const canIClaim = await live.namespace.canReserve(wallet, positionId, "operator.
 
 ## Reserve a namespace (write path)
 
-Reservation is a contract transaction (`reserveNamespace(nameHash, positionId)`) — that's outside the SDK. Build the calldata via your transaction tool of choice (ethers, viem) using `nox.namespace.hash(name)` as the `bytes32 nameHash` argument.
+Reservation is a contract transaction. The SDK can build calldata and prepare/simulate/estimate an EIP-1559 transaction. Signing must come from an injected signer; the SDK does not load private keys.
+
+```ts
+const data = nox.calldata.namespace.reserve("operator.alice", 0n);
+const plan = await live.tx.prepare(wallet, nox.deployment.namespaceRegistry, data);
+```
 
 ## Verify a claim locally
 

@@ -91,3 +91,84 @@ const nox = new Nox({
 ```ts
 Nox.mainnet().safe.tx("0xstaking…", "0xdeadbeef");
 ```
+
+---
+
+Staking writes below all use the prepare → sign → send pattern. `signer` is your
+injected `{ address, signTransaction(tx) }` — the SDK holds no keys. See
+[stake.md](guides/stake.md) for the full lifecycle.
+
+```ts
+import { Nox, MAINNET_DEPLOYMENT } from "@nonos/nox-staking-sdk";
+const nox     = Nox.mainnet();
+const live    = nox.connect(rpc);
+const staking = MAINNET_DEPLOYMENT.stakingProxy;
+const token   = MAINNET_DEPLOYMENT.token;
+const NOX     = 10n ** 18n;
+
+async function send(to, data, signer) {
+  const plan = await live.tx.prepare(wallet, to, data);   // simulates on your RPC
+  const raw  = await live.tx.sign(signer, plan.tx);
+  return live.tx.sendAndWait(raw, true);
+}
+```
+
+## read balance / allowance / pending
+
+```ts
+await live.token.balanceOf(wallet);            // wei
+await live.token.allowance(wallet, staking);   // wei the contract may pull
+await live.staking.pendingRewards(wallet);     // claimable, wei
+await live.staking.activePositionCount(wallet);// open positions, bigint
+```
+
+## approve NOX (once)
+
+```ts
+const MAX = (1n << 256n) - 1n;
+await send(token, nox.calldata.token.approve(staking, MAX), signer);
+```
+
+## stake (flexible)
+
+```ts
+await send(staking, nox.calldata.staking.stake(100n * NOX), signer);
+```
+
+## stake-locked
+
+```ts
+const DAY = 86_400n;
+await send(staking, nox.calldata.staking.stakeLocked(100n * NOX, 90n * DAY), signer);
+```
+
+## claim rewards
+
+```ts
+await send(staking, nox.calldata.staking.claimRewards(), signer);
+```
+
+## compound a position
+
+```ts
+await send(staking, nox.calldata.staking.compoundRewards(0n), signer);
+```
+
+## unstake (unlocked position)
+
+```ts
+await send(staking, nox.calldata.staking.unstakePosition(0n), signer);
+```
+
+## early-unlock (still locked — burns ~5% penalty)
+
+```ts
+await send(staking, nox.calldata.staking.earlyUnlock(0n), signer);
+```
+
+## decode a receipt / revert
+
+```ts
+live.tx.decodeReceipt(rawReceipt);       // { status, logs, … }
+live.tx.decodeRevert("0x08c379a0…");     // { kind, reason?, selector? }
+```
