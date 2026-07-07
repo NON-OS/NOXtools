@@ -11,7 +11,39 @@ export function makeReceipt(input: PositionInput): StakeReceipt {
   };
 }
 
+const ADDRESS_RE = /^0x[0-9a-fA-F]{40}$/;
+const ID_RE = /^0x[0-9a-f]{64}$/;
+const AMOUNT_RE = /^\d+(\.\d+)?$/;
+
+// Field domains from crates/nox-core/src/types.rs (PositionInput/StakeReceipt).
+const U64_MAX = (1n << 64n) - 1n; // chain_id / position_id / lock_until / issued_at: u64
+const U32_MAX = 0xffffffff; // boost_bps: u32
+const U8_MAX = 0xff; // tier: u8
+
 export function receiptDigest(r: StakeReceipt): string {
+  // The digest preimage joins fields with "|"; free-form strings would let two
+  // different receipts collide. Reject anything that is not strictly shaped.
+  if (!ADDRESS_RE.test(r.wallet)) throw new Error("receipt: invalid wallet address");
+  if (!ADDRESS_RE.test(r.stakingContract)) throw new Error("receipt: invalid staking contract address");
+  if (!AMOUNT_RE.test(r.amount)) throw new Error("receipt: invalid amount string");
+  if (!ID_RE.test(r.onchainOperatorId)) throw new Error("receipt: invalid onchain operator id");
+  if (!ID_RE.test(r.offchainOperatorId)) throw new Error("receipt: invalid offchain operator id");
+  if (!Number.isInteger(r.chainId) || r.chainId < 0 || r.chainId > Number(U64_MAX)) {
+    throw new Error("receipt: invalid chainId");
+  }
+  if (!Number.isInteger(r.boostBps) || r.boostBps < 0 || r.boostBps > U32_MAX) {
+    throw new Error("receipt: invalid boostBps");
+  }
+  if (!Number.isInteger(r.tier) || r.tier < 0 || r.tier > U8_MAX) throw new Error("receipt: invalid tier");
+  if (typeof r.positionId !== "bigint" || r.positionId < 0n || r.positionId > U64_MAX) {
+    throw new Error("receipt: invalid positionId");
+  }
+  if (typeof r.lockUntil !== "bigint" || r.lockUntil < 0n || r.lockUntil > U64_MAX) {
+    throw new Error("receipt: invalid lockUntil");
+  }
+  if (typeof r.issuedAt !== "bigint" || r.issuedAt < 0n || r.issuedAt > U64_MAX) {
+    throw new Error("receipt: invalid issuedAt");
+  }
   const body = [
     "NOX_STAKE_RECEIPT_V1",
     r.wallet,
