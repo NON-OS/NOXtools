@@ -1,7 +1,8 @@
 # NOX staking tools
 
 Local-first tools for staking NOX on Ethereum mainnet. Your keys, your RPC, no
-servers, no telemetry. Two pieces, one repository:
+backend, no telemetry. Run everything on your own machine, or use the copy we
+host. Two pieces, one repository:
 
 - **Dashboard** (app, for stakers) - `@nonos/nox-dashboard`. A browser UI you
   run on your own machine.
@@ -20,8 +21,10 @@ npx @nonos/nox-dashboard
 ```
 
 Source: <https://github.com/NON-OS/NOXDashboard> (mounted in this repo under
-`dashboard/`). Hosted copy: <https://staking.nonos.software>, byte-identical to
-what you run yourself.
+`dashboard/`). Hosted copy we run: <https://staking.nonos.software>, the same
+static bundle you get from `npx`, so you can verify it against what you build
+yourself. Running locally keeps everything on your machine; the hosted copy is
+served by us for convenience and still talks only to your RPC and wallet.
 
 ## Builders: use the SDK
 
@@ -170,6 +173,7 @@ MAINNET_DEPLOYMENT.safe                // 0x3a52ea60F61036Afbbec25F46a64485Ac447
 Guides ship inside the package. After `npm install`, find them at
 `node_modules/@nonos/nox-staking-sdk/docs/`.
 
+- Install guide (SDK + dashboard): [./docs/INSTALL.md](./docs/INSTALL.md)
 - Quickstart: [./docs/QUICKSTART.md](./docs/QUICKSTART.md)
 - Recipes: [./docs/RECIPES.md](./docs/RECIPES.md)
 - Stake and manage a position: [./docs/guides/stake.md](./docs/guides/stake.md)
